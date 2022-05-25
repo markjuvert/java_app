@@ -28,7 +28,6 @@ test {
 
 sonarqube {
     properties {
-        property 'sonar.sourceEncoding", "UTF-8'
         property 'sonar.host.url', 'http://34.125.196.160:9000/'
         property 'sonar.login', '8d86a68a6f7ab1f82ae479bbcc74119194b09c9a'
     }
