@@ -8,11 +8,15 @@ pipeline{
                 }
             }
             steps{
-                script{
+                script {
                     withSonarQubeEnv(credentialsId: 'sonar_token') {
-                        //sh "chmod +x gradlew"
-                        sh "java -version"
-                        sh "gradle sonarqube"
+                        sh 'gradle sonarqube'
+                }
+                timeout (time: 1, unit: 'HOURS') {
+                    def qg = waitForQualityGate()
+                    if (qg.status !='OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
                 }
             }
         }
