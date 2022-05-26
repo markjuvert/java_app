@@ -28,6 +28,13 @@
 pipeline{
 //    agent any
     agent any
+    stages {
+        stage('build and test the project') {
+            agent {
+                docker image 'openjdk:11'
+            }
+        }
+    }
     tools{
         gradle 'Gradle-7.4.2'
     }
