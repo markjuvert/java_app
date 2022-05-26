@@ -32,11 +32,13 @@ pipeline{
     }
     stages{
         stage('Using Docker') {
-            agent {
-                docker {
-                    image 'openjdk:11'
+            steps {
+                agent {
+                    docker {
+                        image 'openjdk:11'
                 }
             }
+        }
         }
         stage('Checkout') {
 //            agent { docker 'gradle:6-jdk8' }
