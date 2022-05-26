@@ -62,10 +62,10 @@ pipeline{
         stage ('docker build & docker push'){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'admin', variable: 'docker-nexus_pass')]) {
+                    withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
                     sh '''
                         docker build -t 34.125.67.248:8083/java-app:${VERSION} .
-                        docker login -u admin -p $docker-nexus_pass 34.125.67.248:8083
+                        docker login -u admin -p $nexus_pass 34.125.67.248:8083
                         docker push 34.125.67.248:8083/java-app:${VERSION}
                         docker rmi 34.125.67.248:8083/java-app:${VERSION}
                     '''
