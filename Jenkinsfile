@@ -37,6 +37,13 @@ pipeline{
                echo 'success'
             }
         }
+        stage('Using Docker') {
+            agent {
+                docker {
+                    image 'openjdk:11'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'gradle clean build'
