@@ -32,11 +32,6 @@ pipeline{
         gradle 'Gradle-7.4.2'
     }
     stages{
-        stage('build and test the project') {
-            steps {
-               docker image 'openjdk:11'
-            }
-        }
         stage('Checkout') {
             steps {
                echo 'success'
