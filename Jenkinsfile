@@ -65,7 +65,7 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pass-nexus_passwd', variable: 'docker_pass_2_access_nexus')]) {
                     sh '''
                         docker build -t 34.125.67.248:8083/java-app:${VERSION} .
-                        docker login -u admin -p docker_pass-nexus_passwd 34.125.67.248:8083
+                        docker login -u admin -p Ju95exGod 34.125.67.248:8083
                         docker push 34.125.67.248:8083/java-app:${VERSION}
                         docker rmi 34.125.67.248:8083/java-app:${VERSION}
                     '''
