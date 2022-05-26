@@ -27,6 +27,9 @@
 
 pipeline{
     agent any
+    environment{
+        VERSION = "${env.BUILD_ID}"
+    }
     tools{
         gradle 'Gradle-7.4.2'
     }
@@ -56,6 +59,21 @@ pipeline{
             }
         }
     }
+        stage ('docker build & docker push'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pass-nexus_passwd', variable: 'docker_pass_2_access_nexus')]) {
+                    sh '''
+                        docker build -t 34.125.67.248:8083/java-app:${VERSION} .
+                        docker login -u admin -p docker_pass_2_access_nexus 34.125.67.248:8083
+                        docker push 34.125.67.248:8083/java-app:${VERSION}
+                        docker rmi 34.125.67.248:8083/java-app:${VERSION}
+                    '''
+}
+
+                }
+            }
+        }
 }
 }
 
