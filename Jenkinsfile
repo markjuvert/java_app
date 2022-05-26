@@ -27,26 +27,16 @@
 
 pipeline{
 //    agent any
-    agent {
-                docker {
-                    image 'openjdk:11'
-                }
-            }
+    agent any
+       docker {
+          image 'openjdk:11'
+               }
     tools{
         gradle 'Gradle-7.4.2'
     }
     stages{
-        // stage('Using Docker') {
-        //     steps {
-        //         agent {
-        //             docker {
-        //                 image 'openjdk:11'
-        //         }
-        //     }
-        // }
-        // }
+
         stage('Checkout') {
-//            agent { docker 'gradle:6-jdk8' }
             steps {
                echo 'success'
             }
