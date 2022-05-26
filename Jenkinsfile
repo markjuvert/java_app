@@ -66,7 +66,7 @@ pipeline{
                     sh '''
                         docker build -t 34.125.67.248:8083/java-app:${VERSION} .
 
-                        echo "$docker-nexus_pass" | docker login --username foo --password-stdin
+                        echo "$docker-nexus_pass" | docker login --username foo --password-stdin 34.125.67.248:8083
                         docker push 34.125.67.248:8083/java-app:${VERSION}
                         docker rmi 34.125.67.248:8083/java-app:${VERSION}
                     '''
