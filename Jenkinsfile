@@ -28,9 +28,6 @@
 pipeline{
 //    agent any
     agent any
-       docker {
-          image 'openjdk:11'
-               }
     tools{
         gradle 'Gradle-7.4.2'
     }
