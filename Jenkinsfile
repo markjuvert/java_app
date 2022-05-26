@@ -30,8 +30,8 @@ pipeline{
     agent any
     stages {
         stage('build and test the project') {
-            agent {
-                docker image 'openjdk:11'
+            agent docker {
+               image 'openjdk:11'
             }
         }
     }
