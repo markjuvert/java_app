@@ -31,17 +31,17 @@ pipeline{
         gradle 'Gradle-7.4.2'
     }
     stages{
-        stage('Checkout') {
-//            agent { docker 'gradle:6-jdk8' }
-            steps {
-               echo 'success'
-            }
-        }
         stage('Using Docker') {
             agent {
                 docker {
                     image 'openjdk:11'
                 }
+            }
+        }
+        stage('Checkout') {
+//            agent { docker 'gradle:6-jdk8' }
+            steps {
+               echo 'success'
             }
         }
         stage('Build') {
