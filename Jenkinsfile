@@ -25,37 +25,68 @@
 // }
 
 
+// pipeline{
+// //    agent any
+//     agent any
+//     tools{
+//         gradle 'Gradle-7.4.2'
+//     }
+//     stages{
+//         stage('Checkout') {
+//             steps {
+//                echo 'success'
+//             }
+//         }
+//         stage('Build') {
+//             steps {
+//                 sh 'gradle clean build'
+//             }
+//             }
+//         stage('Quality Check Analysis') {
+//             steps {
+//                 script {
+//                     withSonarQubeEnv(credentialsId: 'sonar_token') {
+//                         sh 'gradle sonarqube'
+//                 }
+//                 timeout (time: 1, unit: 'HOURS') {
+//                     def qg = waitForQualityGate()
+//                     if (qg.status !='OK') {
+//                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+// }
+
 pipeline{
-//    agent any
     agent any
-    tools{
-        gradle 'Gradle-7.4.2'
-    }
+    // environment{
+    //     VERSION = "${env.BUILD_ID}"
+    // }
     stages{
-        stage('Checkout') {
-            steps {
-               echo 'success'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'gradle clean build'
-            }
-            }
-        stage('Quality Check Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv(credentialsId: 'sonar_token') {
-                        sh 'gradle sonarqube'
+        stage("sonar quality check"){
+            agent {
+                docker {
+                    image 'openjdk:11'
                 }
-                timeout (time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if (qg.status !='OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+            }
+            steps{
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonar_token') {
+                         sh 'gradle sonarqube'
+                 }
+
+                    timeout(time: 1, unit: 'HOURS') {
+                      def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
                     }
+
                 }
             }
         }
     }
-}
 }
