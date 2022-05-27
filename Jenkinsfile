@@ -73,7 +73,6 @@ pipeline{
                 }
             }
         }
-        stages{
         stage('indentifying misconfigs using datree'){
             steps{
                 script{
@@ -84,7 +83,6 @@ pipeline{
                 }
             }
         }
-    }
         stage ('identify misconfigurations using Datree in Helm Chart'){
             steps{
                 script{
