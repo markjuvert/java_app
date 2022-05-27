@@ -78,9 +78,7 @@ pipeline{
                 script{
                     dir('kubernetes/') {
                         sh '''
-                        helm plugin install https://github.com/datreeio/helm-datree
-                        helm plugin update datree
-                        helm datree test myapp/
+                        helm datree test kubernetes/myapp/
                         '''
                     }
                 }
@@ -92,6 +90,7 @@ pipeline{
 			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "pbride.tech2001@gmail.com";
 		}
 	}
-
+//   helm plugin install https://github.com/datreeio/helm-datree
+//                        helm plugin update datree
 }
 
