@@ -73,7 +73,7 @@ pipeline{
                 }
             }
         }
-        stage('identify misconfigurations using Datree in Helm Chart')
+        stage ('identify misconfigurations using Datree in Helm Chart'){
             steps{
                 script{
                     dir('kubernetes/') {
