@@ -87,7 +87,7 @@ pipeline{
             steps{
                 script{
                     dir('kubernetes/') {
-                        withEnv(['JAVA_APP_DATREE_TOKEN=40eb6557-81f0-439a-96cd-655cd634643e']) {
+                        withEnv(['JAVA_APP_DATREE_TOKEN_READ=271cdfcb-187a-430f-a2a5-e3b4a5d8e933']) {
                             sh '''
                             helm datree test myapp/ --no-record
                             '''
@@ -107,6 +107,15 @@ pipeline{
                             curl -u admin:$nexus_pass 34.125.26.178:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                         '''
                         }
+                    }
+                }
+            }
+        }
+        stage('Hello') {
+            steps {
+                script {
+                    withCredentials([kubeconfigFile(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+                        sh 'kubectl get nodes'
                     }
                 }
             }
