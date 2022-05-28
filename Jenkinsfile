@@ -69,7 +69,7 @@ pipeline{
                         docker push 34.125.26.178:8083/java-app:${VERSION}
                         docker rmi 34.125.26.178:8083/java-app:${VERSION}
                     '''
-}
+                    }
                 }
             }
         }
@@ -93,6 +93,21 @@ pipeline{
                             '''
                         }
                      }
+                }
+            }
+        }
+                stage ('Pushing the Helm Charts to Nexus'){
+            steps{
+                script{
+                    dir('kubernetes/') {
+                        withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
+                        sh '''
+                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                            tar -czvf myapp-${helmversion}.tgz myapp/
+                            curl -u admin:$nexus_pass 34.125.26.178:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                        '''
+                        }
+                    }
                 }
             }
         }
