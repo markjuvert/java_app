@@ -88,7 +88,7 @@ pipeline{
                 script{
                     dir('kubernetes/') {
                         sh '''
-                        helm datree test kubernetes/myapp/
+                        helm datree test kubernetes/myapp/ --no-record
                         '''
                     }
                 }
