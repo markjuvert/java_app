@@ -50,12 +50,12 @@ pipeline{
                     withSonarQubeEnv(credentialsId: 'admin_sonarqube') {
                         sh 'gradle sonarqube'
                 }
-                timeout (time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if (qg.status !='OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                    }
-                }
+                // timeout (time: 1, unit: 'HOURS') {
+                //     def qg = waitForQualityGate()
+                //     if (qg.status !='OK') {
+                //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                //     }
+                // }
             }
         }
     }
@@ -86,12 +86,12 @@ pipeline{
         stage ('identify misconfigurations using Datree in Helm Chart'){
             steps{
                 script{
-                    withEnv(['DATREE_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
-                        dir('kubernetes/') {
-                        sh '''
-                        helm datree test myapp/ --no-record
-                        '''
-                    }
+                    dir('kubernetes/') {
+                        withEnv(['DATREE_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
+                            sh '''
+                            helm datree test myapp/ --no-record
+                            '''
+                        }
                      }
                 }
             }
