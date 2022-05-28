@@ -50,7 +50,7 @@ pipeline{
                     withSonarQubeEnv(credentialsId: 'admin_sonarqube') {
                         sh 'gradle sonarqube'
                 }
-                timeout (time: 2, unit: 'MINUTES') {
+                timeout (time: 1, unit: 'HOURS') {
                     def qg = waitForQualityGate()
                     if (qg.status !='OK') {
                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
