@@ -68,7 +68,7 @@ pipeline{
                     withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
                     sh '''
                         docker build -t 34.125.26.178:8083/java-app:${VERSION} .
-                        docker login 34.125.26.178:8083 -u admin -p $nexus_pass 
+                        docker login 34.125.26.178:8083 -u admin -p $nexus_pass
                         docker push 34.125.26.178:8083/java-app:${VERSION}
                         docker rmi 34.125.26.178:8083/java-app:${VERSION}
                     '''
@@ -130,7 +130,7 @@ pipeline{
                     withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
                         // sh 'kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/java-app" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                     }
                 }
