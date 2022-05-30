@@ -40,42 +40,42 @@ pipeline{
                echo 'success'
             }
         }
-        // stage('Build') {
-        //     steps {
-        //         sh 'gradle clean build'
-        //     }
-        //     }
-    //     stage('Quality Check Analysis') {
-    //         steps {
-    //             script {
-    //                 withSonarQubeEnv(credentialsId: 'sonar_token_2') {
-    //                     // sh 'chmod +x gradlew'
-    //                     // sh './gradlew sonarqube'
-    //                     sh 'gradle sonarqube'
-    //             }
-    //             // timeout (time: 1, unit: 'HOURS') {
-    //             //     def qg = waitForQualityGate()
-    //             //     if (qg.status !='OK') {
-    //             //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
-    //             //     }
-    //             // }
-    //         }
-    //     }
-    // }
-        // stage ('docker build & docker push'){
-        //     steps{
-        //         script{
-        //             withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
-        //             sh '''
-        //                 docker build -t 34.125.26.178:8083/java-app:${VERSION} .
-        //                 docker login -u admin -p $nexus_pass 34.125.26.178:8083
-        //                 docker push 34.125.26.178:8083/java-app:${VERSION}
-        //                 docker rmi 34.125.26.178:8083/java-app:${VERSION}
-        //             '''
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                sh 'gradle clean build'
+            }
+            }
+        stage('Quality Check Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv(credentialsId: 'sonar_token_2') {
+                        // sh 'chmod +x gradlew'
+                        // sh './gradlew sonarqube'
+                        sh 'gradle sonarqube'
+                }
+                // timeout (time: 1, unit: 'HOURS') {
+                //     def qg = waitForQualityGate()
+                //     if (qg.status !='OK') {
+                //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                //     }
+                // }
+            }
+        }
+    }
+        stage ('docker build & docker push'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
+                    sh '''
+                        docker build -t 34.125.26.178:8083/java-app:${VERSION} .
+                        docker login -u admin -p $nexus_pass 34.125.26.178:8083
+                        docker push 34.125.26.178:8083/java-app:${VERSION}
+                        docker rmi 34.125.26.178:8083/java-app:${VERSION}
+                    '''
+                    }
+                }
+            }
+        }
         // stage('indentifying misconfigs using datree'){
         //     steps{
         //         script{
