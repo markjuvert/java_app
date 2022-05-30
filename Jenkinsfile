@@ -124,15 +124,15 @@ pipeline{
                 }
             }
         }
-        // stage('Hello') {
-        //     steps {
-        //         script {
-        //             withCredentials([kubeconfigFile(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
-        //                 sh 'kubectl get nodes'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Hello') {
+            steps {
+                script {
+                    withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
+                        sh 'kubectl get nodes'
+                    }
+                }
+            }
+        }
     }
         post {
 		always {
