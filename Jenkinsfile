@@ -91,9 +91,10 @@ pipeline{
                 script{
                     dir('kubernetes/') {
                         withEnv(['DEFAULT_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
-                            sh '''
-                            sudo helm datree test myapp/
-                            '''
+                            // sh '''
+                            // sudo helm datree test myapp/
+                            // '''
+                            sh 'helm datree version'
                         }
                      }
                 }
