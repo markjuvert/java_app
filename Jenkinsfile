@@ -31,9 +31,9 @@ pipeline{
     environment{
         VERSION = "${env.BUILD_ID}"
     }
-    // tools{
-    //     gradle 'gradle-7.4.2'
-    // }
+    tools{
+        gradle 'gradle-7.1.1'
+    }
     stages{
         stage('Checkout') {
             steps {
