@@ -48,7 +48,7 @@ pipeline{
         stage('Quality Check Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv(credentialsId: 'admin_sonarqube') {
+                    withSonarQubeEnv(credentialsId: 'sonar_token_2') {
                         // sh 'chmod +x gradlew'
                         // sh './gradlew sonarqube'
                         sh 'gradle sonarqube'
