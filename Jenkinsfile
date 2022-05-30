@@ -31,9 +31,9 @@ pipeline{
     environment{
         VERSION = "${env.BUILD_ID}"
     }
-    tools{
-        gradle 'gradle-7.4.2'
-    }
+    // tools{
+    //     gradle 'gradle-7.4.2'
+    // }
     stages{
         stage('Checkout') {
             steps {
@@ -49,7 +49,9 @@ pipeline{
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'admin_sonarqube') {
-                        sh 'gradle sonarqube'
+                        sh 'chmod +x gradlew'
+                        sh './gradlew sonarqube'
+//                        sh 'gradle sonarqube'
                 }
                 // timeout (time: 1, unit: 'HOURS') {
                 //     def qg = waitForQualityGate()
