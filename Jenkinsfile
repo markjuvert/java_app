@@ -23,7 +23,7 @@
 //     }
 // }
 // }
-//Check the pipeline below
+//Check the 
 
 
 pipeline{
@@ -40,11 +40,11 @@ pipeline{
                echo 'success'
             }
         }
-        stage('Build') {
-            steps {
-                sh 'gradle clean build'
-            }
-            }
+        // stage('Build') {
+        //     steps {
+        //         sh 'gradle clean build'
+        //     }
+        //     }
     //     stage('Quality Check Analysis') {
     //         steps {
     //             script {
