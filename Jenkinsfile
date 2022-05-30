@@ -92,7 +92,6 @@ pipeline{
                     // sh 'helm plugin install https://github.com/datreeio/helm-datree'
                     // sh 'helm plugin update datree'
                     dir('kubernetes/') {
-                        sh 'datree config set token 9de05cb3-14d1-4ed3-b672-c80b2478a7e5'
                         withEnv(['DEFAULT_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
                             sh 'helm datree test myapp/'
                         }
