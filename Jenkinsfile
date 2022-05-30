@@ -62,20 +62,20 @@ pipeline{
             }
         }
     }
-        stage ('docker build & docker push'){
-            steps{
-                script{
-                    withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
-                    sh '''
-                        docker build -t 34.125.26.178:8083/java-app:${VERSION} .
-                        docker login -u admin -p $nexus_pass 34.125.26.178:8083
-                        docker push 34.125.26.178:8083/java-app:${VERSION}
-                        docker rmi 34.125.26.178:8083/java-app:${VERSION}
-                    '''
-                    }
-                }
-            }
-        }
+        // stage ('docker build & docker push'){
+        //     steps{
+        //         script{
+        //             withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
+        //             sh '''
+        //                 docker build -t 34.125.26.178:8083/java-app:${VERSION} .
+        //                 docker login -u admin -p $nexus_pass 34.125.26.178:8083
+        //                 docker push 34.125.26.178:8083/java-app:${VERSION}
+        //                 docker rmi 34.125.26.178:8083/java-app:${VERSION}
+        //             '''
+        //             }
+        //         }
+        //     }
+        // }
         // stage('indentifying misconfigs using datree'){
         //     steps{
         //         script{
@@ -90,9 +90,9 @@ pipeline{
             steps{
                 script{
                     dir('kubernetes/') {
-                        withEnv(['JAVA_APP_DATREE_TOKEN_READ=271cdfcb-187a-430f-a2a5-e3b4a5d8e933']) {
+                        withEnv(['DEFAULT_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
                             sh '''
-                            helm datree test myapp/ --no-record
+                            helm datree test kubernetes/myapp/
                             '''
                         }
                      }
