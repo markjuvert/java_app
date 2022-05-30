@@ -93,7 +93,7 @@ pipeline{
                     // sh 'helm plugin update datree'
                     dir('kubernetes/') {
                         withEnv(['DEFAULT_TOKEN=9de05cb3-14d1-4ed3-b672-c80b2478a7e5']) {
-                            sh 'helm datree test myapp/'
+                            sh 'helm datree test myapp/ --no-record'
                         }
                      }
                 }
