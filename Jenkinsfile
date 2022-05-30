@@ -130,7 +130,7 @@ pipeline{
                     withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
                         // sh 'kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/springapp" --set image.tag="${VERSION}" juv_app myapp/ '
                         }
                     }
                 }
