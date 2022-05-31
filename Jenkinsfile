@@ -61,6 +61,13 @@ pipeline{
     //     }
     // }
 
+        stage('Build') {
+            steps {
+                sh 'chmod +x gradlew'
+                sh './gradlew clean build'
+                // sh 'gradle clean build'
+            }
+            }
         stage("sonar quality check"){
             agent {
                 docker {
@@ -70,8 +77,6 @@ pipeline{
             steps{
                 script{
                     withSonarQubeEnv(credentialsId: 'sonar_token_2') {
-                            sh 'chmod +x gradlew'
-                            sh './gradlew clean build'
                             sh 'gradle sonarqube'
                     }
 
@@ -85,6 +90,7 @@ pipeline{
                 }
             }
         }
+    
 
         stage ('docker build & docker push'){
             steps{
