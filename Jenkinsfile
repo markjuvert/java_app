@@ -101,10 +101,10 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'admin', variable: 'nexus_pass')]) {
                     sh '''
-                        docker build -t 34.125.26.178:8083/java-app:${VERSION} .
+                        docker build -t 34.125.26.178:8083/springapp:${VERSION} .
                         docker login 34.125.26.178:8083 -u admin -p $nexus_pass
-                        docker push 34.125.26.178:8083/java-app:${VERSION}
-                        docker rmi 34.125.26.178:8083/java-app:${VERSION}
+                        docker push 34.125.26.178:8083/springapp:${VERSION}
+                        docker rmi 34.125.26.178:8083/springapp:${VERSION}
                     '''
                     }
                 }
@@ -112,19 +112,19 @@ pipeline{
         }
 
 
-        // stage ('identify misconfigurations using Datree in Helm Chart'){
-        //     steps{
-        //         script{
-        //             // sh 'helm plugin install https://github.com/datreeio/helm-datree'
-        //             // sh 'helm plugin update datree'
-        //             dir('kubernetes/') {
-        //                 withEnv(['DATREE_TOKEN=033c377d-8b0b-493d-81b1-07b4bfe1f613']) {
-        //                     sh 'helm datree test myapp/ --no-record'
-        //                 }
-        //              }
-        //         }
-        //     }
-        // }
+        stage ('identify misconfigurations using Datree in Helm Chart'){
+            steps{
+                script{
+                    // sh 'helm plugin install https://github.com/datreeio/helm-datree'
+                    // sh 'helm plugin update datree'
+                    dir('kubernetes/') {
+                        withEnv(['DATREE_TOKEN=033c377d-8b0b-493d-81b1-07b4bfe1f613']) {
+                            sh 'helm datree test myapp/ --no-record'
+                        }
+                     }
+                }
+            }
+        }
 
                 stage ('Pushing the Helm Charts to Nexus'){
             steps{
@@ -141,23 +141,23 @@ pipeline{
                 }
             }
         }
-        // stage('manual approval'){
-        //     steps{
-        //         script{
-        //             timeout(10) {
-        //                 mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Go to build url and approve the deployment request <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "pbride.tech2001@gmail.com";  
-        //                 input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
-        //             }
-        //         }
-        //     }
-        // }
+        stage('manual approval'){
+            steps{
+                script{
+                    timeout(10) {
+                        mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Go to build url and approve the deployment request <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "pbride.tech2001@gmail.com";  
+                        input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
+                    }
+                }
+            }
+        }
         stage('Deploying application on k8s cluster') {
             steps {
                 script {
                     withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
                         // sh 'kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/java-app" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="34.125.26.178:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                     }
                 }
