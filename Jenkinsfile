@@ -38,10 +38,6 @@ pipeline{
             }
         }
     }
-    post{
-        always{
-            echo "SUCCESS"
-        }
-    }
+
 }
 }
