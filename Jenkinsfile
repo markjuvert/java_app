@@ -4,7 +4,7 @@ pipeline{
         VERSION = "${env.BUILD_ID}"
     }
     tools{
-        gradle 'gradle-7.4.2'
+        gradle 'gradle'
     }
     stages{
         stage("Sonar Quality Check"){
