@@ -5,7 +5,7 @@ pipeline{
             agent {
                 docker {
                     //image 'openjdk:11'
-                    docker ps
+                    ps
                 }
             }
             steps{
