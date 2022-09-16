@@ -1,5 +1,8 @@
 pipeline{
-    agent any 
+    agent any
+    tools{
+        gradle 'Gradle-7.4.2'
+    }
     stages{
         stage("Sonar Quality Check"){
             agent {
