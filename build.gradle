@@ -3,7 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'war'
-	id 'org.sonarqube' version '3.3'
+	id 'org.sonarqube'
 }
 
 group = 'com.example'
@@ -28,7 +28,7 @@ test {
 
 sonarqube {
     properties {
-        property 'sonar.host.url', 'http://34.125.201.58:9000'
+        property 'sonar.host.url', 'http://107.20.108.253:9000'
         property 'sonar.login', '******'
     }
 }
