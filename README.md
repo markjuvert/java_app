@@ -15,4 +15,4 @@ The next stage involves scanning the code to remove errors, misconfigurations an
 
 Sonarqube have many rules such as duplications, vulnerability check, security hotspot, reliability, Maintainability Rating, deprecated, functions check amongst others that can be assigned to a quality gate. Once the scanning is complete, the code can either pass or fail the quality gate check. If the code passes the quality gate check, it can move to the next steps but if it fails, it will abort the next steps will not be performed. 
 
-![Sonar Quality Gate](sonarqualitygate.png)
+![Sonar Quality Gate](images/sonarqualitygate.png)
