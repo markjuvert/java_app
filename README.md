@@ -13,3 +13,5 @@ The pipeline starts by creating a Jenkins pipeline job using Pipeline script fro
 ### Code Analysis
 The next stage involves scanning the code to remove errors, misconfigurations and also to make sure we can run the code safely. In this stage, the sonarqube plugin is integrated in Jenkins by configuring an environment variable in the pipeline, and a sonarqube token is generated which jenkins will use to authenticate to sonarqube. Also, a webhook is created between jenkins and sonarqube to allow communication between them.
 
+Sonarqube have many rules such as duplications, vulnerability check, security hotspot, reliability, Maintainability Rating, deprecated, functions check amongst others that can be assigned to a quality gate. Once the scanning is complete, the code can either pass or fail the quality gate check. If the code passes the quality gate check, it can move to the next steps but if it fails, it will abort the next steps will not be performed. 
+
