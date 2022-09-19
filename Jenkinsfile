@@ -4,7 +4,7 @@ pipeline{
         VERSION = "${env.BUILD_ID}"
     }
     tools{
-        gradle 'gradle'
+        gradle 'Gradle-7.4.2'
     }
     stages{
         stage('SCM Checkout'){
@@ -26,19 +26,20 @@ pipeline{
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonar2token') {
+                        //sonar2token
+                        //sh 'gradle sonarqube'
                         sh 'chmod +x gradlew'
-                        sh 'gradle sonarqube'
+                        sh './gradlew sonarqube'
                 }
-                    timeout (2) {
-                        //timeout (time: 1, unit: 'HOURS') {
-                      def qg = waitForQualityGate()
-                      if (qg.status !='OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                     }
-                 }
+                // timeout (time: 1, unit: 'HOURS') {
+                //     def qg = waitForQualityGate()
+                //     if (qg.status !='OK') {
+                //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                //     }
+                // }
             }
         }
     }
+    }
 
-}
 }
