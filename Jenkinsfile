@@ -9,7 +9,7 @@ pipeline{
     stages{
         stage('SCM Checkout'){
             agent {
-                docker {dvf
+                docker {
                     image 'openjdk:11'
                 }
             }
