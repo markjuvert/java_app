@@ -21,3 +21,5 @@ Sonarqube have many rules such as duplications, vulnerability check, security ho
 ### Containerizing The Application
 Once the quality gate is successful, the application is then build and ready for containerization. Before running the application in contaiers, an image of the application have to be created. In this demo, I used docker to create an image of the application by creating a DockerFile with all the necessary steps.
 Once the application code have been converted to an image, it needs a repository to be save in. In this demo, I use the Nexus Repository to save the image. I could also use docker repository or other repositories to store the image. 
+
+
