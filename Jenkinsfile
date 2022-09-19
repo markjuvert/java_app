@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        VERS v
+        VERSION = "${env.BUILD_ID}"
     }
     tools{
         gradle 'gradle'
