@@ -1,7 +1,8 @@
 pipeline{
     agent any
-    environment{
+    environment {
         VERSION = "${env.BUILD_ID}"
+        DOCKERHUB_CREDENTIALS=credentials('juvertm')
     }
     tools{
         gradle 'gradle'
@@ -45,10 +46,10 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'admin', variable: 'docker_pw')]) {
                     sh '''
-                    docker build -t 54.235.3.249:8083/webapp:${VERSION} .
-                    docker login 54.235.3.249:8083 -u admin -p $docker_pw
-                    docker push 54.235.3.249:8083/webapp:${VERSION}
-                    docker rmi 54.235.3.249:8083/webapp:${VERSION}
+                    docker build -t 54.161.40.79:8083/webapp:${VERSION} .
+                    docker login 54.161.40.79:8083 -u admin -p $docker_pw
+                    docker push 54.161.40.79:8083/webapp:${VERSION}
+                    docker rmi 54.161.40.79:8083/webapp:${VERSION}
                     '''
                     }
                 }
