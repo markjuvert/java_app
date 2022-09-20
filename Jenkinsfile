@@ -48,8 +48,6 @@ pipeline{
 }               docker login -u admin -p $docker_pw 54.162.183.108:8083
                 docker build -t 54.162.183.108:8083/webapp:${VERSION} .
                 docker rmi 54.162.183.108:8083/webapp:${VERSION}
-                
-
                 '''
             }
             echo "====++++executing Docker ++++===="
