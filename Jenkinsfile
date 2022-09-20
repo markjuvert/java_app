@@ -67,7 +67,9 @@ pipeline{
             }
         }
         stage('Push') {
+            steps {
             sh 'docker push juvertm/webapp:latest'
+            }
         }
     }
     post {
