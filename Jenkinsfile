@@ -1,8 +1,8 @@
 pipeline{
     agent any
     environment {
-        VERSION = "${env.BUILD_ID}"
-        // DOCKERHUB_CREDENTIALS=credentials('juvertm')
+        //VERSION = "${env.BUILD_ID}"
+        DOCKERHUB_CREDENTIALS=credentials('juvertm')
     }
     tools{
         gradle 'gradle'
@@ -41,19 +41,38 @@ pipeline{
             }
         }
         }
-        stage("Build docker image and push to a repo"){
-            steps{
-                script{
-                    withCredentials([string(credentialsId: 'admin', variable: 'docker_pw')]) {
-                    sh '''
-                    docker build -t 54.166.202.199:8083/webapp:${VERSION} .
-                    docker login 54.166.202.199:8083 -u admin -p $docker_pw
-                    docker push 54.166.202.199:8083/webapp:${VERSION}
-                    docker rmi 54.166.202.199:8083/webapp:${VERSION}
-                    '''
-                    }
-                }
+        // stage("Build docker image and push to a repo"){
+        //     steps{
+        //         script{
+        //             withCredentials([string(credentialsId: 'admin', variable: 'docker_pw')]) {
+        //             sh '''
+        //             docker build -t 54.166.202.199:8083/webapp:${VERSION} .
+        //             docker login 54.166.202.199:8083 -u admin -p $docker_pw
+        //             docker push 54.166.202.199:8083/webapp:${VERSION}
+        //             docker rmi 54.166.202.199:8083/webapp:${VERSION}
+        //             '''
+        //             }
+        //         }
+        //     }
+        // }
+        stage("Build docker image"){
+            steps {
+                sh 'docker build -t juvertm/webapp:latest .'
             }
+
+        }
+        stage('Login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('Push') {
+            sh 'docker push juvertm/webapp:latest'
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 
