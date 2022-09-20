@@ -50,19 +50,6 @@ pipeline{
                 docker rmi 54.162.183.108:8083/webapp:${VERSION}
                 '''
             }
-            echo "====++++executing Docker ++++===="
-        }
-        post{
-            always{
-                echo "====++++always++++===="
-            }
-            success{
-                echo "====++++Docker  executed successfully++++===="
-            }
-            failure{
-                echo "====++++Docker  execution failed++++===="
-            }
-    
         }
     }
     }
