@@ -57,18 +57,19 @@ pipeline{
         // }
         stage("Build docker image"){
             steps {
-                sh 'docker build -t juvertm/webapp:latest .'
+                sh 'docker build -t juvertm/fromcicd:$BUILD_NUMBER .'
             }
 
         }
         stage('Login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                echo 'Login Completed'
             }
         }
         stage('Push') {
             steps {
-            sh 'docker push juvertm/webapp:latest'
+            sh 'sudo docker push juvertm/fromcicd:$BUILD_NUMBER'
             }
         }
     }
