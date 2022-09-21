@@ -57,7 +57,7 @@ pipeline{
         // }
         stage("Build docker image"){
             steps {
-                sh 'docker build -t juvertm/fromcicd:$BUILD_NUMBER .'
+                sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
             }
 
         }
@@ -70,7 +70,7 @@ pipeline{
         stage('Publish image to Docker Hub') {
             steps {
         withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-          sh  'docker push juvertm/fromcicd:$BUILD_NUMBER'
+          sh  'docker push juvertm/webapp:$BUILD_NUMBER'
         }
           }
         }
