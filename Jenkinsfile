@@ -61,16 +61,23 @@ pipeline{
             }
 
         }
-        stage('Login') {
+        // stage('Login') {
+        //     steps {
+        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //         echo 'Login Completed'
+        //     }
+        // }
+        stage('Publish image to Docker Hub') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                echo 'Login Completed'
-            }
+        withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+          sh  'docker push juvertm/fromcicd:$BUILD_NUMBER'
         }
-        stage('Push') {
-            steps {
-            sh 'sudo docker push juvertm/fromcicd:$BUILD_NUMBER'
-            }
+          }
         }
+        // stage('Push') {
+        //     steps {
+        //     sh 'sudo docker push juvertm/fromcicd:$BUILD_NUMBER'
+        //     }
+        // }
     }
 }
