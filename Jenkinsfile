@@ -27,8 +27,6 @@ pipeline{
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonar2token') {
-                        //sonar2token
-                        //sh 'gradle sonarqube'
                         sh 'chmod +x gradlew'
                         sh './gradlew sonarqube'
                 }
@@ -41,6 +39,7 @@ pipeline{
             }
         }
         }
+        // Pushing image to a Private repo such as Nexus
         // stage("Build docker image and push to a repo"){
         //     steps{
         //         script{
@@ -55,28 +54,19 @@ pipeline{
         //         }
         //     }
         // }
-        stage("Build docker image"){
-            steps {
-                sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
-            }
 
-        }
-        // stage('Login') {
+        //G S
+        // stage("Build docker image"){
         //     steps {
-        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        //         echo 'Login Completed'
+        //         sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
         //     }
+
         // }
-        stage('Publish image to Docker Hub') {
-            steps {
-        withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-          sh  'docker push juvertm/webapp:$BUILD_NUMBER'
-        }
-          }
-        }
-        // stage('Push') {
+        // stage('Push image to Docker Hub') {
         //     steps {
-        //     sh 'sudo docker push juvertm/fromcicd:$BUILD_NUMBER'
+        // withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+        //   sh  'docker push juvertm/webapp:$BUILD_NUMBER'
+        //         }
         //     }
         // }
     }
