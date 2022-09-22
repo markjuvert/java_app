@@ -1,8 +1,8 @@
 pipeline{
     agent any
     environment {
-        //VERSION = "${env.BUILD_ID}"
-        DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
+        VERSION = "${env.BUILD_ID}"
+        //DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
     }
     tools{
         gradle 'gradle'
