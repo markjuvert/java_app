@@ -25,4 +25,6 @@ Once the application code have been converted to an image, it needs a repository
 
 
 ### Setting Up Mail Connectivity
+Setting up a notification service for a pipeline is very important as developers, and administrators can recieve instant message about the status of the pipeline at any given time. Also, it may just be a gate for manual approval, just to check and make sure everything is right before deploying the application or giving access to certain resources or next steps in the pipeline. In this demo, a simple email system was setup that once the build is successful, an email should be sent to the admin. In order to configure Email, I downloaded the Email plugin in Jenkins and enter the appropriate parameters to set it up. Once I ran the pipeline, an email was immediately sent to me. 
+
 
