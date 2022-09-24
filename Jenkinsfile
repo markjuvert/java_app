@@ -69,16 +69,16 @@ pipeline{
         //     }
         // }
         }
-        stage('Identify misconfiguration using Datree in Helm Charts'){
-            steps{
-                spript {
-                    dir('kubernetes/') {
-                        sh 'helm datree test myapp/'
-                    }
+        // stage('Identify misconfiguration using Datree in Helm Charts'){
+        //     steps{
+        //         spript {
+        //             dir('kubernetes/') {
+        //                 sh 'helm datree test myapp/'
+        //             }
 
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
 }
 
     // post {
