@@ -94,8 +94,7 @@ pipeline{
                         dir('kubernetes/') {
                 withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
                         sh '''
-                            helmversion=$( helm show chart /myapp | grep version | cut -d: -f 2 | tr -d ' ')
-                            tar -czvf myapp-${helmversion}.tgz myapp/
+                            sudo helmversion=$( helm show chart myapp/ | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz .
                             docker push myapp-${helmversion}.tgz -v
                         '''
                         }
