@@ -77,6 +77,8 @@ pipeline{
                             dir('kubernetes/') {
                                 withEnv(['DATREE_TOKEN=033c377d-8b0b-493d-81b1-07b4bfe1f613']) {
                                 //sh 'helm datree test myapp/'
+                                sh 'helm plugin install https://github.com/datreeio/helm-datree'
+                                sh 'helm plugin update datree'
                                 sh 'helm datree version'
                                 }
                             }
