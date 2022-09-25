@@ -91,10 +91,10 @@ pipeline{
         stage ('Pushing the Helm Charts'){
             steps{
                 script{
-                        dir('kubernetes/') {
                 withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+                    dir('kubernetes/') {
                         sh '''
-                            helmversion=$( helm show chart myapp/ | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz .
+                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
                             docker push myapp-${helmversion}.tgz -v
                         '''
                         }
