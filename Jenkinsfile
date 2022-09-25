@@ -39,21 +39,21 @@ pipeline{
             }
         }
         }
-        // Pushing image to a Private repo such as Nexus
-        // stage("Build docker image and push to a repo"){
-        //     steps{
-        //         script{
-        //             withCredentials([string(credentialsId: 'admin', variable: 'docker_pw')]) {
-        //             sh '''
-        //             docker build -t 54.166.202.199:8083/webapp:${VERSION} .
-        //             docker login 54.166.202.199:8083 -u admin -p $docker_pw
-        //             docker push 54.166.202.199:8083/webapp:${VERSION}
-        //             docker rmi 54.166.202.199:8083/webapp:${VERSION}
-        //             '''
-        //             }
-        //         }
-        //     }
-        // }
+        Pushing image to a Private repo such as Nexus
+        stage("Build docker image and push to a repo"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                    sh '''
+                    docker build -t 3.95.204.252:8083/webapp:${VERSION} .
+                    docker login 3.95.204.252:8083 -u admin -p $docker_pw
+                    docker push 3.95.204.252:8083/webapp:${VERSION}
+                    docker rmi 3.95.204.252:8083/webapp:${VERSION}
+                    '''
+                    }
+                }
+            }
+        }
 
         //G S
         // stage("Build docker image"){
