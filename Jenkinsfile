@@ -96,7 +96,7 @@ pipeline{
                     dir('kubernetes/') {
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
-                            docker push juvertm/myapp-${helmversion}.tgz
+                            docker push juvertm/myapp:${helmversion}
                         '''
                         }
                     }
