@@ -38,6 +38,7 @@ pipeline{
                 }
             }
         }
+        }
         // Pushing image to a Private repo such as Nexus
         // stage("Build docker image and push to a repo"){
         //     steps{
@@ -68,7 +69,7 @@ pipeline{
                 }
             }
         }
-        
+
 
 
         stage ('Identify misconfigurations using Datree in Helm Chart'){
@@ -113,5 +114,4 @@ pipeline{
     //         }
     //     }
 
-}
 }
