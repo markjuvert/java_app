@@ -87,22 +87,35 @@ pipeline{
                     }
                 }
 
-
-
-        stage ('Pushing the Helm Charts'){
+        stage ('Pushing the Helm Charts to Nexus'){
             steps{
                 script{
-                withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
                     dir('kubernetes/') {
+                        withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         sh '''
-                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
-                            docker push juvertm/myapp:${helmversion}
+                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                            tar -czvf myapp-${helmversion}.tgz myapp/
+                            curl -u admin:$docker_pw 3.95.204.252:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                         '''
                         }
                     }
                 }
-            }
-        }
+
+
+        // stage ('Pushing the Helm Charts'){
+        //     steps{
+        //         script{
+        //         withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+        //             dir('kubernetes/') {
+        //                 sh '''
+        //                     helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
+        //                     docker push juvertm/myapp-${helmversion}.tgz
+        //                 '''
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         
 
