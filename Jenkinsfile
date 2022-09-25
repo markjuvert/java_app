@@ -39,7 +39,7 @@ pipeline{
             }
         }
         }
-        Pushing image to a Private repo such as Nexus
+        //Pushing image to a Private repo such as Nexus
         stage("Build docker image and push to a repo"){
             steps{
                 script{
