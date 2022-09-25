@@ -100,8 +100,8 @@ pipeline{
                         }
                     }
                 }
-
-
+            }
+        }
         // stage ('Pushing the Helm Charts'){
         //     steps{
         //         script{
