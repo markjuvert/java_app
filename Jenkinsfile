@@ -56,19 +56,19 @@ pipeline{
         // }
 
         //G S
-        stage("Build docker image"){
-            steps {
-                sh 'docker build -t myapp:$BUILD_NUMBER .'
-            }
+        // stage("Build docker image"){
+        //     steps {
+        //         sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
+        //     }
 
-        }
-        stage('Push image to Docker Hub') {
-            steps {
-        withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-          sh  'docker push myapp:$BUILD_NUMBER'
-                }
-            }
-        }
+        // }
+        // stage('Push image to Docker Hub') {
+        //     steps {
+        // withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+        //   sh  'docker push juvertm/webapp:$BUILD_NUMBER'
+        //         }
+        //     }
+        // }
 
 
 
@@ -96,7 +96,7 @@ pipeline{
                     dir('kubernetes/') {
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
-                            docker push myapp-${helmversion}.tgz
+                            docker push juvertm/myapp-${helmversion}.tgz
                         '''
                         }
                     }
@@ -104,7 +104,7 @@ pipeline{
             }
         }
 
-
+        
 
 }
 
