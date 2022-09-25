@@ -68,7 +68,7 @@ pipeline{
                 }
             }
         }
-        }
+        
 
 
         stage ('Identify misconfigurations using Datree in Helm Chart'){
