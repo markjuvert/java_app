@@ -40,28 +40,29 @@ pipeline{
         }
         }
         //Pushing image to a Private repo such as Nexus
-        stage("Build docker image and push to a repo"){
-            steps{
-                script{
-                    withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-                    sh '''
-                    docker build -t 3.95.204.252:8083/webapp:${VERSION} .
-                    docker login 3.95.204.252:8083 -u admin -p $docker_pw
-                    docker push 3.95.204.252:8083/webapp:${VERSION}
-                    docker rmi 3.95.204.252:8083/webapp:${VERSION}
-                    '''
-                    }
-                }
-            }
-        }
+        // stage("Build docker image and push to a repo"){
+        //     steps{
+        //         script{
+        //             withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+        //             sh '''
+        //             docker build -t 3.95.204.252:8083/webapp:${VERSION} .
+        //             docker login 3.95.204.252:8083 -u admin -p $docker_pw
+        //             docker push 3.95.204.252:8083/webapp:${VERSION}
+        //             docker rmi 3.95.204.252:8083/webapp:${VERSION}
+        //             '''
+        //             }
+        //         }
+        //     }
+        // }
 
-        //G S
+        //Build a docker image
         // stage("Build docker image"){
         //     steps {
         //         sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
         //     }
 
         // }
+        // Push Image to Docker hub
         // stage('Push image to Docker Hub') {
         //     steps {
         // withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
@@ -71,7 +72,7 @@ pipeline{
         // }
 
 
-
+        // Identify Misconfigurations using Datree Helm 
         stage ('Identify misconfigurations using Datree in Helm Chart'){
                     steps{
                         script{
@@ -86,30 +87,16 @@ pipeline{
                         }
                     }
                 }
-
-        stage ('Pushing the Helm Charts to Nexus'){
-            steps{
-                script{
-                    dir('kubernetes/') {
-                        withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-                        sh '''
-                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
-                            tar -czvf myapp-${helmversion}.tgz myapp/
-                            curl -u admin:$docker_pw 3.95.204.252:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
-                        '''
-                        }
-                    }
-                }
-            }
-        }
-        // stage ('Pushing the Helm Charts'){
+        // Push Helm charts to Nexus Repository
+        // stage ('Pushing the Helm Charts to Nexus'){
         //     steps{
         //         script{
-        //         withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
         //             dir('kubernetes/') {
+        //                 withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
         //                 sh '''
-        //                     helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ') tar -czvf myapp-${helmversion}.tgz myapp/
-        //                     docker push juvertm/myapp-${helmversion}.tgz
+        //                     helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+        //                     tar -czvf myapp-${helmversion}.tgz myapp/
+        //                     curl -u admin:$docker_pw 3.95.204.252:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
         //                 '''
         //                 }
         //             }
@@ -117,8 +104,15 @@ pipeline{
         //     }
         // }
 
-        
-
+        stage('Deploying application to k8s cluster') {
+            steps {
+                script {
+                    withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
+                        sh 'kubectl get nodes'
+                        }
+                    }
+                }
+            }
 }
 
     // post {
