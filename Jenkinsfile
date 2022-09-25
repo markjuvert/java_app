@@ -107,9 +107,9 @@ pipeline{
         stage('Deploying application to k8s cluster') {
             steps {
                 script {
-                    withCredentials([kubeconfig(credentialsId: 'kubernetes-config', serverUrl: '18.212.41.62')]) {
+                    //withCredentials([kubeconfig(credentialsId: 'kubernetes-config')]) {
                         sh 'kubectl get nodes'
-                        }
+                      // }
                     }
                 }
             }
