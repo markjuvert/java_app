@@ -58,14 +58,14 @@ pipeline{
         //G S
         stage("Build docker image"){
             steps {
-                sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
+                sh 'docker build -t myapp:$BUILD_NUMBER .'
             }
 
         }
         stage('Push image to Docker Hub') {
             steps {
         withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-          sh  'docker push juvertm/webapp:$BUILD_NUMBER'
+          sh  'docker push myapp:$BUILD_NUMBER'
                 }
             }
         }
