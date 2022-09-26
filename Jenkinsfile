@@ -45,11 +45,11 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                     sh '''
-                    docker build -t 34.204.0.201:8083/webapp:${VERSION} .
-                    docker login 34.204.0.201:8083 -u admin -p $docker_pw
-                    '''
-                    // docker push 34.204.0.201:8083/webapp:${VERSION}
-                    // docker rmi 34.204.0.201:8083/webapp:${VERSION}
+                    docker build -t 52.91.54.124:8083/webapp:${VERSION} .
+                    docker login 52.91.54.124:8083 -u admin -p $docker_pw
+                    docker push 52.91.54.124:8083/webapp:${VERSION}
+                    docker rmi 52.91.54.124:8083/webapp:${VERSION}
+                       '''
                     }
                 }
             }
@@ -96,7 +96,7 @@ pipeline{
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                             tar -czvf myapp-${helmversion}.tgz myapp/
-                            curl -u admin:$docker_pw 34.204.0.201:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                            curl -u admin:$docker_pw 52.91.54.124:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                         '''
                         }
                     }
@@ -120,11 +120,11 @@ pipeline{
             steps {
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
-                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'  
+                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="34.204.0.201:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="52.91.54.124:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
