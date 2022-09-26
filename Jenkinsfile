@@ -107,8 +107,10 @@ pipeline{
         stage('Deploying application to k8s cluster') {
             steps {
                 script {
-                    withCredentials([kubeconfig(credentialsId: 'kubernetes-config')]) {
-                        sh 'kubectl get nodes'
+                     withKubeConfig([credentialsId: 'kubernetes-config']) {
+                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'  
+                        sh 'chmod u+x ./kubectl'
+                        sh './kubectl get nodes'
                       }
                     }
                 }
