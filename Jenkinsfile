@@ -40,20 +40,20 @@ pipeline{
         }
         }
         //Pushing image to a Private repo such as Nexus
-        // stage("Build docker image and push to a repo"){
-        //     steps{
-        //         script{
-        //             withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-        //             sh '''
-        //             docker build -t 3.95.204.252:8083/webapp:${VERSION} .
-        //             docker login 3.95.204.252:8083 -u admin -p $docker_pw
-        //             docker push 3.95.204.252:8083/webapp:${VERSION}
-        //             docker rmi 3.95.204.252:8083/webapp:${VERSION}
-        //             '''
-        //             }
-        //         }
-        //     }
-        // }
+        stage("Build docker image and push to a repo"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                    sh '''
+                    docker build -t 34.204.0.201:8083/webapp:${VERSION} .
+                    docker login 34.204.0.201:8083 -u admin -p $docker_pw
+                    docker push 34.204.0.201:8083/webapp:${VERSION}
+                    docker rmi 34.204.0.201:8083/webapp:${VERSION}
+                    '''
+                    }
+                }
+            }
+        }
 
         //Build a docker image
         // stage("Build docker image"){
@@ -88,21 +88,21 @@ pipeline{
                     }
                 }
         // Push Helm charts to Nexus Repository
-        // stage ('Pushing the Helm Charts to Nexus'){
-        //     steps{
-        //         script{
-        //             dir('kubernetes/') {
-        //                 withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-        //                 sh '''
-        //                     helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
-        //                     tar -czvf myapp-${helmversion}.tgz myapp/
-        //                     curl -u admin:$docker_pw 3.95.204.252:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
-        //                 '''
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage ('Pushing the Helm Charts to Nexus'){
+            steps{
+                script{
+                    dir('kubernetes/') {
+                        withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                        sh '''
+                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                            tar -czvf myapp-${helmversion}.tgz myapp/
+                            curl -u admin:$docker_pw 34.204.0.201:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                        '''
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Deploying application to k8s cluster') {
             steps {
@@ -111,6 +111,9 @@ pipeline{
                         sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'  
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
+                        dir('kubernetes/') {
+                        sh 'helm upgrade --install --set image.repository="34.204.0.201:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        }
                       }
                     }
                 }
