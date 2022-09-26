@@ -47,9 +47,9 @@ pipeline{
                     sh '''
                     docker build -t 34.204.0.201:8083/webapp:${VERSION} .
                     docker login 34.204.0.201:8083 -u admin -p $docker_pw
-                    docker push 34.204.0.201:8083/webapp:${VERSION}
-                    docker rmi 34.204.0.201:8083/webapp:${VERSION}
                     '''
+                    // docker push 34.204.0.201:8083/webapp:${VERSION}
+                    // docker rmi 34.204.0.201:8083/webapp:${VERSION}
                     }
                 }
             }
