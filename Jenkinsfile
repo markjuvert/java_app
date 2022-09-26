@@ -46,7 +46,6 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                     sh '''
                     docker login 52.91.54.124:8083 -u admin -p $docker_pw
-                    docker rmi 258fc4c36628 7c3410334f0e 7f5cbd8cc787 5fb077656e1c 1c0ae7c03b3a d2e6b3107399 258fc4c36628 59955a9d5fab  7f5cbd8cc787 54dd2fb1ea37 86738ef4a62c 54dd2fb1ea37 86738ef4a62c 54dd2fb1ea37 
                     '''
                     //docker build -t 52.91.54.124:8083/webapp:${VERSION} .
                     //docker push 52.91.54.124:8083/webapp:${VERSION}
@@ -117,20 +116,20 @@ pipeline{
             }
         }
 
-        stage('Deploying application to k8s cluster') {
-            steps {
-                script {
-                     withKubeConfig([credentialsId: 'kubernetes-config']) {
-                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-                        sh 'chmod u+x ./kubectl'
-                        sh './kubectl get nodes'
-                        dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="52.91.54.124:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
-                        }
-                      }
-                    }
-                }
-            }
+        // stage('Deploying application to k8s cluster') {
+        //     steps {
+        //         script {
+        //              withKubeConfig([credentialsId: 'kubernetes-config']) {
+        //                 sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+        //                 sh 'chmod u+x ./kubectl'
+        //                 sh './kubectl get nodes'
+        //                 dir('kubernetes/') {
+        //                 sh 'helm upgrade --install --set image.repository="52.91.54.124:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+        //                 }
+        //               }
+        //             }
+        //         }
+        //     }
 }
 
     // post {
