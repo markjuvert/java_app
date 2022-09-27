@@ -45,11 +45,11 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                     sh '''
-                    docker login 52.91.54.124:8083 -u admin -p $docker_pw
+                    docker login 54.234.43.254:8083 -u admin -p $docker_pw
                     '''
-                    //docker build -t 52.91.54.124:8083/webapp:${VERSION} .
-                    //docker push 52.91.54.124:8083/webapp:${VERSION}
-                    //docker rmi 52.91.54.124:8083/webapp:${VERSION}
+                    //docker build -t 54.234.43.254:8083/webapp:${VERSION} .
+                    //docker push 54.234.43.254:8083/webapp:${VERSION}
+                    //docker rmi 54.234.43.254:8083/webapp:${VERSION}
                     }
                 }
             }
