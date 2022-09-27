@@ -137,20 +137,20 @@ pipeline{
 
 
         // verifying if deployment is successful
-        stage('verifying application deployment'){
-            steps{
-                script{
-                     withKubeConfig([credentialsId: 'kubernetes-config']) {
-                        echo 'Starting Verification'
-                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-                        sh 'chmod u+x ./kubectl'
-                        sh './kubectl get nodes'
-                        sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
+        // stage('verifying application deployment'){
+        //     steps{
+        //         script{
+        //              withKubeConfig([credentialsId: 'kubernetes-config']) {
+        //                 echo 'Starting Verification'
+        //                 sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+        //                 sh 'chmod u+x ./kubectl'
+        //                 sh './kubectl get nodes'
+        //                 sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
 
-                     }
-                }
-            }
-        }
+        //              }
+        //         }
+        //     }
+        // }
 }
 
     // post {
