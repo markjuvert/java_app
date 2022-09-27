@@ -130,6 +130,19 @@ pipeline{
         //             }
         //         }
         //     }
+
+
+        // verifying if deployment is successful
+        stage('verifying application deployment'){
+            steps{
+                script{
+                     withCredentials([kubeconfigFile(credentialsId: 'kubernetes', variable: 'KUBECONFIG')]) {
+                         sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
+
+                     }
+                }
+            }
+        }
 }
 
     // post {
