@@ -44,12 +44,13 @@ pipeline{
             steps{
                 script{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-                    sh '''
-                    docker login 54.234.43.254:8083 -u admin -p $docker_pw
-                    '''
-                    //docker build -t 54.234.43.254:8083/webapp:${VERSION} .
-                    //docker push 54.234.43.254:8083/webapp:${VERSION}
-                    //docker rmi 54.234.43.254:8083/webapp:${VERSION}
+                        echo 'Starting Docker'
+                        sh '''
+                        docker login 54.234.43.254:8083 -u admin -p $docker_pw
+                        '''
+                        //docker build -t 54.234.43.254:8083/webapp:${VERSION} .
+                        //docker push 54.234.43.254:8083/webapp:${VERSION}
+                        //docker rmi 54.234.43.254:8083/webapp:${VERSION}
                     }
                 }
             }
