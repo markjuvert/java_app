@@ -73,7 +73,8 @@ pipeline{
         // }
 
 
-        // Identify Misconfigurations using Datree Helm 
+        // Identify Misconfigurations using Datree Helm
+        echo 'Identify misconfigurations using Datree in Helm Chart'
         stage ('Identify misconfigurations using Datree in Helm Chart'){
                     steps{
                         script{
@@ -94,6 +95,7 @@ pipeline{
                 script{
                     dir('kubernetes/') {
                         withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                        echo 'Pushing image to Repository'
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                             tar -czvf myapp-${helmversion}.tgz myapp/
@@ -121,6 +123,7 @@ pipeline{
             steps {
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
+                        echo 'Deploying application to k8s cluster'
                         sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
@@ -138,10 +141,11 @@ pipeline{
             steps{
                 script{
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
+                        echo 'Starting Verification'
                         sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-        /                sh 'chmod u+x ./kubectl'
-                         sh './kubectl get nodes'
-                         sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
+                        sh 'chmod u+x ./kubectl'
+                        sh './kubectl get nodes'
+                        sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
 
                      }
                 }
