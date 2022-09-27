@@ -127,13 +127,13 @@ pipeline{
                         sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
-                        dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="54.234.43.254:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        //dir('kubernetes/') {
+                        //sh 'helm upgrade --install --set image.repository="54.234.43.254:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
                 }
-            }
+
 
 
         // verifying if deployment is successful
