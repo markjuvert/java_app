@@ -40,17 +40,17 @@ pipeline{
         }
         }
         //Pushing image to a Private repo such as Nexus
-        stage("Build docker image and push to a repo"){
+        stage("Build Docker Image and Push to the Repository"){
             steps{
                 script{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         echo 'Starting Docker'
                         sh '''
                         docker login 54.234.43.254:8083 -u admin -p $docker_pw
+                        docker build -t 54.234.43.254:8083/webapp:${VERSION} .
+                        docker push 54.234.43.254:8083/webapp:${VERSION}
+                        docker rmi 54.234.43.254:8083/webapp:${VERSION}
                         '''
-                        //docker build -t 54.234.43.254:8083/webapp:${VERSION} .
-                        //docker push 54.234.43.254:8083/webapp:${VERSION}
-                        //docker rmi 54.234.43.254:8083/webapp:${VERSION}
                     }
                 }
             }
@@ -117,20 +117,20 @@ pipeline{
             }
         }
 
-        // stage('Deploying application to k8s cluster') {
-        //     steps {
-        //         script {
-        //              withKubeConfig([credentialsId: 'kubernetes-config']) {
-        //                 sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-        //                 sh 'chmod u+x ./kubectl'
-        //                 sh './kubectl get nodes'
-        //                 dir('kubernetes/') {
-        //                 sh 'helm upgrade --install --set image.repository="54.234.43.254:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
-        //                 }
-        //               }
-        //             }
-        //         }
-        //     }
+        stage('Deploying application to k8s cluster') {
+            steps {
+                script {
+                     withKubeConfig([credentialsId: 'kubernetes-config']) {
+                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+                        sh 'chmod u+x ./kubectl'
+                        sh './kubectl get nodes'
+                        dir('kubernetes/') {
+                        sh 'helm upgrade --install --set image.repository="54.234.43.254:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        }
+                      }
+                    }
+                }
+            }
 
 
         // verifying if deployment is successful
