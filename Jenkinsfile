@@ -1,43 +1,31 @@
 pipeline{
-    agent any
-    environment {
+    agent any 
+    environment{
         VERSION = "${env.BUILD_ID}"
-        //DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
-    }
-    tools{
-        gradle 'gradle'
     }
     stages{
-        stage('SCM Checkout'){
+        stage("sonar quality check"){
             agent {
                 docker {
                     image 'openjdk:11'
                 }
             }
-            steps {
-               echo 'Code pull from github successful'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'gradle clean build'
-            }
-            }
-        stage('Quality Check Analysis') {
-            steps {
-                script {
+            steps{
+                script{
                     withSonarQubeEnv(credentialsId: 'sonar2token') {
-                        sh 'chmod +x gradlew'
-                        sh './gradlew sonarqube'
-                }
-                 timeout (time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if (qg.status !='OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                            sh 'chmod +x gradlew'
+                            sh './gradlew sonarqube'
                     }
-                }
+
+                    timeout(time: 1, unit: 'HOURS') {
+                      def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
+                    }
+
+                }  
             }
-        }
         }
         //Pushing image to a Private repo such as Nexus
         stage("Build Docker Image and Push to the Repository"){
@@ -46,10 +34,11 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         echo 'Starting Docker'
                         sh '''
+                        docker build -t 3.94.102.165:8083/springapp:${VERSION} .
                         docker login 3.94.102.165:8083 -u admin -p $docker_pw
-                        docker build -t 3.94.102.165:8083/webapp:${VERSION} .
-                        docker push 3.94.102.165:8083/webapp:${VERSION}
-                        docker rmi 3.94.102.165:8083/webapp:${VERSION}
+                        docker push 3.94.102.165:8083/springapp:${VERSION}
+                        docker rmi 3.94.102.165:8083/springapp:${VERSION}
+                        docker image prune -f 
                         '''
                     }
                 }
@@ -59,7 +48,7 @@ pipeline{
         //Build a docker image
         // stage("Build docker image"){
         //     steps {
-        //         sh 'docker build -t juvertm/webapp:$BUILD_NUMBER .'
+        //         sh 'docker build -t juvertm/springapp:$BUILD_NUMBER .'
         //     }
 
         // }
@@ -67,7 +56,7 @@ pipeline{
         // stage('Push image to Docker Hub') {
         //     steps {
         // withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
-        //   sh  'docker push juvertm/webapp:$BUILD_NUMBER'
+        //   sh  'docker push juvertm/springapp:$BUILD_NUMBER'
         //         }
         //     }
         // }
@@ -125,11 +114,11 @@ pipeline{
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
                         echo 'Deploying application to k8s cluster'
-                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-                        sh 'chmod u+x ./kubectl'
+                        // sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+                        // sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="3.94.102.165:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="3.94.102.165:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
@@ -144,7 +133,10 @@ pipeline{
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
                         echo 'Starting Verification'
                         sh './kubectl get nodes'
-                        sh 'kubectl run curl --image=curlimages/curl -i --rm --restart=Never -- curl myjavaapp-myapp:8080'
+                        sh '''
+                        chmod +x healthcheck.sh
+                        ./healthcheck.sh
+                        '''
 
                      }
                 }
