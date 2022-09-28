@@ -134,7 +134,7 @@ pipeline{
                       }
                     }
                 }
-
+        }
 
 
         // verifying if deployment is successful
