@@ -51,4 +51,3 @@ spec:
             limits:
               memory: 0.25Gi 
               cpu: 0.5
-
