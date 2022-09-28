@@ -46,10 +46,10 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         echo 'Starting Docker'
                         sh '''
-                        docker login 54.234.43.254:8083 -u admin -p $docker_pw
-                        docker build -t 54.234.43.254:8083/webapp:${VERSION} .
-                        docker push 54.234.43.254:8083/webapp:${VERSION}
-                        docker rmi 54.234.43.254:8083/webapp:${VERSION}
+                        docker login 3.94.102.165:8083 -u admin -p $docker_pw
+                        docker build -t 3.94.102.165:8083/webapp:${VERSION} .
+                        docker push 3.94.102.165:8083/webapp:${VERSION}
+                        docker rmi 3.94.102.165:8083/webapp:${VERSION}
                         '''
                     }
                 }
@@ -100,7 +100,7 @@ pipeline{
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                             tar -czvf myapp-${helmversion}.tgz myapp/
-                            curl -u admin:$docker_pw 54.234.43.254:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                            curl -u admin:$docker_pw 3.94.102.165:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                         '''
                         }
                     }
@@ -129,7 +129,7 @@ pipeline{
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         //dir('kubernetes/') {
-                        //sh 'helm upgrade --install --set image.repository="54.234.43.254:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        //sh 'helm upgrade --install --set image.repository="3.94.102.165:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
