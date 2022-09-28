@@ -46,10 +46,10 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         echo 'Starting Docker'
                         sh '''
-                        docker build -t 3.94.102.165:8083/springapp:${VERSION} .
                         docker login 3.94.102.165:8083 -u admin -p $docker_pw
-                        docker push 3.94.102.165:8083/springapp:${VERSION}
-                        docker rmi 3.94.102.165:8083/springapp:${VERSION}
+                        docker build -t 3.94.102.165:8083/webapp:${VERSION} .
+                        docker push 3.94.102.165:8083/webapp:${VERSION}
+                        docker rmi 3.94.102.165:8083/webapp:${VERSION}
                         '''
                     }
                 }
@@ -125,7 +125,12 @@ pipeline{
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
                         echo 'Deploying application to k8s cluster'
+                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+                        sh 'chmod u+x ./kubectl'
+                        sh './kubectl get nodes'
+                        dir('kubernetes/') {
                         sh 'helm upgrade --install --set image.repository="3.94.102.165:8083/webapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        }
                       }
                     }
                 }
