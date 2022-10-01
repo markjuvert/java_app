@@ -66,7 +66,7 @@ pipeline{
                 withSonarQubeEnv(credentialsId: 'sonar2token') {
                       sh '''
                       chmod +x gradlew
-                      ./gradlew sonarqube
+                      ./gradlew run
                       '''
                     }
 
