@@ -8,5 +8,4 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
-rootProject.name = 'java_app'
-include('app', 'list', 'utilities')
+rootProject.name = 'sampleWeb'
