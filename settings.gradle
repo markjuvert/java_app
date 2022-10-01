@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'sampleWeb'
-// include('app')
+include('app')
