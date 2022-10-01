@@ -46,10 +46,10 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
                         echo 'Starting Docker'
                         sh '''
-                            docker build -t 3.94.102.165:8083/springapp:${VERSION} .
-                            docker login -u admin -p $docker_pw 3.94.102.165:8083 
-                            docker push  3.94.102.165:8083/springapp:${VERSION}
-                            docker rmi 3.94.102.165:8083/springapp:${VERSION}
+                            docker build -t 54.221.60.151:8083/springapp:${VERSION} .
+                            docker login -u admin -p $docker_pw 54.221.60.151:8083 
+                            docker push  54.221.60.151:8083/springapp:${VERSION}
+                            docker rmi 54.221.60.151:8083/springapp:${VERSION}
                             docker image prune -f 
                             '''
                             //docker run -d -p 8081:8080 springapp:${VERSION}
@@ -104,7 +104,7 @@ pipeline{
                         sh '''
                             helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                             tar -czvf  myapp-${helmversion}.tgz myapp/
-                            curl -u admin:$docker_pw 3.94.102.165:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                            curl -u admin:$docker_pw 54.221.60.151:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
                         '''
                         }
                     }
@@ -137,7 +137,7 @@ pipeline{
                         // sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         dir('kubernetes/') {
-                        sh 'helm upgrade --install --set image.repository="3.94.102.165:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm upgrade --install --set image.repository="54.221.60.151:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
