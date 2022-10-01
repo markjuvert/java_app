@@ -1,44 +1,85 @@
+// pipeline{
+//     agent any
+//     environment {
+//         VERSION = "${env.BUILD_ID}"
+//         //DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
+//     }
+//     tools{
+//         gradle 'gradle'
+//     }
+//     stages{
+//         stage('SCM Checkout'){
+//             agent {
+//                 docker {
+//                     image 'openjdk:11'
+//                 }
+//             }
+//             steps {
+//                echo 'Code pull from github successful'
+//             }
+//         }
+//         stage('Build') {
+//             steps {
+//                 sh 'gradle clean build'
+//             }
+//             }
+//         stage('Quality Check Analysis') {
+//             steps {
+//                 script {
+//                     withSonarQubeEnv(credentialsId: 'sonar2token') {
+//                         sh 'chmod +x gradlew'
+//                         sh './gradlew sonarqube'
+//                 }
+//                  timeout (time: 1, unit: 'HOURS') {
+//                     def qg = waitForQualityGate()
+//                     if (qg.status !='OK') {
+//                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+//                     }
+//                 }
+//             }
+//         }
+//         }
+
+
+
+
+
+
+
+
+
+
 pipeline{
     agent any
-    environment {
+    environment{
         VERSION = "${env.BUILD_ID}"
-        //DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
-    }
-    tools{
-        gradle 'gradle'
     }
     stages{
-        stage('SCM Checkout'){
-            agent {
-                docker {
+        stage("sonar qube analysis"){
+            agent{
+               docker {
                     image 'openjdk:11'
-                }
+               }
             }
-            steps {
-               echo 'Code pull from github successful'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'gradle clean build'
-            }
-            }
-        stage('Quality Check Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv(credentialsId: 'sonar2token') {
-                        sh 'chmod +x gradlew'
-                        sh './gradlew sonarqube'
-                }
-                 timeout (time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if (qg.status !='OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+            steps{
+               script{
+                withSonarQubeEnv(credentialsId: 'sonar-token') {
+                      sh '''
+                      chmod +x gradlew
+                      ./gradlew sonarqube
+                      '''
                     }
-                }
+
+                timeout(5) {
+                     def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
+                    }
+               }
             }
         }
-        }
+
         //Pushing image to a Private repo such as Nexus
         stage("Build Docker Image and Push to the Repository"){
             steps{
