@@ -4,9 +4,9 @@ pipeline{
         VERSION = "${env.BUILD_ID}"
         //DOCKERHUB_CREDENTIALS = "credentials('juvertm')"
     }
-    // tools{
-    //     gradle 'gradle'
-    // }
+    tools{
+        gradle 'gradle'
+    }
     stages{
         stage('SCM Checkout'){
             agent {
