@@ -180,8 +180,8 @@ pipeline{
                         sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         dir('kubernetes/') {
-                        //sh 'helm upgrade --install --set image.repository="54.221.60.151:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
-                        sh 'helm upgrade --install --set image.repository="54.221.60.151:8083/springapp"'
+                       // sh 'helm upgrade --install --set image.repository="54.221.60.151:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
+                        sh 'helm --set image.repository="54.221.60.151:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
                         }
                       }
                     }
