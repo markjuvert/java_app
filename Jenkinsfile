@@ -176,8 +176,8 @@ pipeline{
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
                         echo 'Deploying application to k8s cluster'
-                        // sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
-                        // sh 'chmod u+x ./kubectl'
+                        sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"'
+                        sh 'chmod u+x ./kubectl'
                         sh './kubectl get nodes'
                         dir('kubernetes/') {
                         sh 'helm upgrade --install --set image.repository="54.221.60.151:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/ '
