@@ -164,10 +164,10 @@ pipeline{
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
                         echo 'Starting Verification'
                         sh './kubectl get nodes'
-                        // sh '''
-                        // chmod +x healthcheck.sh
-                        // ./healthcheck.sh
-                        // '''
+                        sh '''
+                        chmod +x healthcheck.sh
+                        ./healthcheck.sh
+                        '''
 
                      }
                 }
