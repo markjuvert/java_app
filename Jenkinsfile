@@ -158,21 +158,21 @@ pipeline{
 
 
         // verifying if deployment is successful
-        // stage('verifying application deployment'){
-        //     steps{
-        //         script{
-        //              withKubeConfig([credentialsId: 'kubernetes-config']) {
-        //                 echo 'Starting Verification'
-        //                 sh './kubectl get nodes'
-        //                 sh '''
-        //                 chmod +x healthcheck.sh
-        //                 ./healthcheck.sh
-        //                 '''
+        stage('verifying application deployment'){
+            steps{
+                script{
+                     withKubeConfig([credentialsId: 'kubernetes-config']) {
+                        echo 'Starting Verification'
+                        sh './kubectl get nodes'
+                        // sh '''
+                        // chmod +x healthcheck.sh
+                        // ./healthcheck.sh
+                        // '''
 
-        //              }
-        //         }
-        //     }
-        // }
+                     }
+                }
+            }
+        }
 }
 
     // post {
