@@ -85,7 +85,7 @@ pipeline{
 
 
 
-        Identify Misconfigurations using Datree Helm
+       // Identify Misconfigurations using Datree Helm
 
         stage ('Identify misconfigurations using Datree in Helm Chart'){
                     steps{
