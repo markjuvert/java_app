@@ -104,23 +104,23 @@ pipeline{
                 }
 
 
-        // Push Helm charts to Nexus Repository
-        // stage ('Pushing the Helm Charts to Nexus'){
-        //     steps{
-        //         script{
-        //             dir('kubernetes/') {
-        //                 withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-        //                 echo 'Pushing image to Repository'
-        //                 sh '''
-        //                     helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
-        //                     tar -czvf  myapp-${helmversion}.tgz myapp/
-        //                     curl -u admin:$docker_pw 54.196.185.116:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
-        //                 '''
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        Push Helm charts to Nexus Repository
+        stage ('Pushing the Helm Charts to Nexus'){
+            steps{
+                script{
+                    dir('kubernetes/') {
+                        withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                        echo 'Pushing image to Repository'
+                        sh '''
+                            helmversion=$( helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                            tar -czvf  myapp-${helmversion}.tgz myapp/
+                            curl -u admin:$docker_pw 54.226.31.187:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                        '''
+                        }
+                    }
+                }
+            }
+        }
 
 
 
