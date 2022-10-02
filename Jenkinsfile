@@ -104,7 +104,7 @@ pipeline{
                 }
 
 
-        Push Helm charts to Nexus Repository
+        //Push Helm charts to Nexus Repository
         stage ('Pushing the Helm Charts to Nexus'){
             steps{
                 script{
