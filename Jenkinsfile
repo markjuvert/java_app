@@ -138,7 +138,7 @@ pipeline{
 
 
 
-        // stage('Deploying application to k8s cluster') {
+        stage('Deploying application to k8s cluster') {
             steps {
                 script {
                      withKubeConfig([credentialsId: 'kubernetes-config']) {
