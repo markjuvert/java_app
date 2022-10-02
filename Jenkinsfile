@@ -42,24 +42,24 @@ pipeline{
 
 
 
-        // //Pushing image to a Private repo such as Nexus
-        // stage("Build Docker Image and Push to the Repository"){
-        //     steps{
-        //         script{
-        //             withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
-        //                 echo 'Starting Docker'
-        //                 sh '''
-        //                     docker build -t 54.196.185.116:8083/springapp:${VERSION} .
-        //                     docker login -u admin -p $docker_pw 54.196.185.116:8083 
-        //                     docker push  54.196.185.116:8083/springapp:${VERSION}
-        //                     docker rmi 54.196.185.116:8083/springapp:${VERSION}
-        //                     docker image prune -f 
-        //                     '''
-        //                     //docker run -d -p 8081:8080 springapp:${VERSION}
-        //             }
-        //         }
-        //     }
-        // }
+        //Pushing image to a Private repo such as Nexus
+        stage("Build Docker Image and Push to the Repository"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pw', variable: 'docker_pw')]) {
+                        echo 'Starting Docker'
+                        sh '''
+                            docker build -t 54.196.185.116:8083/springapp:${VERSION} .
+                            docker login -u admin -p $docker_pw 54.196.185.116:8083 
+                            docker push  54.196.185.116:8083/springapp:${VERSION}
+                            docker rmi 54.196.185.116:8083/springapp:${VERSION}
+                            docker image prune -f 
+                            '''
+                            //docker run -d -p 8081:8080 springapp:${VERSION}
+                    }
+                }
+            }
+        }
 
 
 
