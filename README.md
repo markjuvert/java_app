@@ -36,3 +36,4 @@ That's where Datree comes in. Datree helps to identify misconfiguration from the
 The datree for helm stage is added to the CICD pipeline in Jenkins file. Datree for helm is configured with token set as ENV, and the yaml files for the deployment is written. The code is then pushed to github which triggers an automated build thanks to webhook. and the results are displayed in the console output as well as on the app.datree dashboard.
 If the test is successful, the helm charts are pushed to a repository, in this case a Nexus repository.
 ![Datree for Helm Console Output](images/datree1.png)
+A full summary of the project can be found at http://www.cicdpipeline.cloud2day.link/
